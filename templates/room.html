@@ -15,7 +15,16 @@
     var socketio = io()
 
     const sendMessage = () => {
-        console.log("Sent")
+        const message = document.getElementById('message').value
+        socketio.emit('mensagem', {usuario: '{{ session.name }}', texto: message })
     }
+
+    socketio.on('feedback msg', function(data){
+        const p = document.createElement('p')
+        p.textContent = data.usuario + ": " + data.texto
+        document.getElementById('messages').appendChild(p)
+    })
+
+
 </script>
 {% endblock %}

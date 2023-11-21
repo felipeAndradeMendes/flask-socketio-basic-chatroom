@@ -1,5 +1,7 @@
+# PAREI NO TUTORIAL EM 1:00:12
+
 from flask import Flask, render_template, request, session, redirect, url_for
-from flask_socketio import join_room, leave_room, send, SocketIO
+from flask_socketio import join_room, leave_room, send, SocketIO, emit
 import random
 from string import ascii_uppercase
 
@@ -84,6 +86,14 @@ def disconnect():
 
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
+
+
+@socketio.on("mensagem")
+def mensagem(data):
+    print("Mensagem recebida: " + data['texto'])
+    print("Usuário: " + data['usuario'])
+
+    emit("feedback msg", data, room=session.get('room'))
 
 
 if __name__ == "__main__":
